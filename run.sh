@@ -52,6 +52,8 @@ if [[ "$0" == "bash" ]] || [[ "$0" == "sh" ]]; then
 
     echo "Linking $REPO_NAME"
     sudo ln -s $HOME_DIR/$REPO_NAME/run.sh /usr/local/bin/dotfile
+
+    return 0
 fi
 
 function printHelp() {
