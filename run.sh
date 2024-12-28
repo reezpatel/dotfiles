@@ -23,7 +23,7 @@ function log() {
     fi
 }
 
-while getopts "v" opt; do
+while getopts "vf" opt; do
     case "$opt" in
     v) verbose=1 ;;
     f) force=1 ;;
