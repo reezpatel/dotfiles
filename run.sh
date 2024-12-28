@@ -95,7 +95,7 @@ function canPull() {
         log "Updating timestamp and pulling"
 
         # Update the timestamp file with the current timestamp
-        date +%s >"$config_ts_file"
+        date +%s >"$ts_file"
 
         return 0 # Can pull
     else
@@ -111,7 +111,7 @@ function pull() {
     if canPull; then
         log "Pulling latest changes"
 
-        (cd "$config_dir" && git pull)
+        (cd "$config_dir" && git pull -r origin main)
     fi
 }
 
@@ -184,17 +184,21 @@ function apply() {
     done
 }
 
-if [[ -z "$0" ]]; then
+log "Running command: $1"
+
+if [[ -z "$1" ]]; then
     echo "Unknown command: $1"
     printHelp
     exit 1
 fi
 
+command="$1"
+
 shift
 
-case "$0" in
+case "$command" in
 apply)
-    apply "$@"
+    apply
     ;;
 pull)
     pull
