@@ -83,7 +83,7 @@ function canPull() {
         return 0
     fi
 
-    last_timestamp=$(cat "$config_ts_file")
+    last_timestamp=$(cat "$ts_file")
 
     # Get the current timestamp
     current_timestamp=$(date +%s)
