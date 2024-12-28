@@ -184,7 +184,7 @@ function apply() {
     done
 }
 
-if [[ -z "$1" ]]; then
+if [[ -z "$0" ]]; then
     echo "Unknown command: $1"
     printHelp
     exit 1
@@ -192,7 +192,7 @@ fi
 
 shift
 
-case "$1" in
+case "$0" in
 apply)
     apply "$@"
     ;;
