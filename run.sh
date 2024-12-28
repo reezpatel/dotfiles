@@ -173,7 +173,7 @@ function apply() {
         # Extract optional lines
         needs=$(grep "^# NEED:" "$script_file" | cut -d '"' -f 2)
         as_root=$(grep "^# AS_ROOT" "$script_file")
-        group=$(grep "^# GROUP" "$script_file" | cut -d ' ' -f 2-)
+        group=$(grep "^# GROUP:" "$script_file" | cut -d ' ' -f 2-)
 
         # Check for circular dependencies
         check_circular_deps "$script_file" ""
