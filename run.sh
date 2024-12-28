@@ -17,6 +17,14 @@ verbose=0
 force=0
 script_dir=$(dirname "$(readlink -f "$0")")
 
+function log() {
+    if [[ "$verbose" -eq 1 ]]; then
+        echo "$@"
+    fi
+}
+
+log "Script directory: $script_dir"
+
 while getopts "v" opt; do
     case "$opt" in
     v) verbose=1 ;;
@@ -29,12 +37,6 @@ while getopts "v" opt; do
 done
 
 shift $((OPTIND - 1))
-
-function log() {
-    if [[ "$verbose" -eq 1 ]]; then
-        echo "$@"
-    fi
-}
 
 if [[ "$0" == "bash" ]] || [[ "$0" == "sh" ]]; then
     echo "Cloning $REPO_NAME"
