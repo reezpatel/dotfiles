@@ -133,6 +133,7 @@ function execute_script() {
         sudo "$script_file"
     else
         log "Executing $script_file..."
+        sudo chmod +x "$script_file"
         "$script_file"
     fi
 
