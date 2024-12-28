@@ -26,7 +26,7 @@ function log() {
 while getopts "v" opt; do
     case "$opt" in
     v) verbose=1 ;;
-    f) verbose=1 ;;
+    f) force=1 ;;
     \?)
         echo "Invalid option: -$OPTARG" >&2
         exit 1
