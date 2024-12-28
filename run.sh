@@ -23,8 +23,6 @@ function log() {
     fi
 }
 
-log "Script directory: $script_dir"
-
 while getopts "v" opt; do
     case "$opt" in
     v) verbose=1 ;;
@@ -35,6 +33,8 @@ while getopts "v" opt; do
         ;;
     esac
 done
+
+log "Script directory: $script_dir"
 
 shift $((OPTIND - 1))
 
@@ -113,11 +113,11 @@ function pull() {
     if canPull; then
         log "Pulling latest changes"
 
-        (cd "$config_dir" && git pull -r origin main)
+        (cd "$script_dir" && git pull -r origin main)
     fi
 }
 
-install_dir="$config_dir/install"
+install_dir="$script_dir/install"
 
 function execute_script() {
     local script_file="$1"
