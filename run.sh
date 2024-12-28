@@ -113,7 +113,12 @@ function pull() {
     if canPull; then
         log "Pulling latest changes"
 
-        (cd "$script_dir" && git pull -r origin main)
+        if [[ "$verbose" -eq 1 ]]; then
+            (cd "$script_dir" && git pull -r origin main)
+        else
+            (cd "$script_dir" && git pull -r origin main) >/dev/null 2>&1
+        fi
+
     fi
 }
 
