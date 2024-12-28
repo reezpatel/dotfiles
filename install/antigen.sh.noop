@@ -1,6 +1,5 @@
 source /opt/homebrew/share/antigen/antigen.zsh
 
-
 antigen bundle git
 antigen bundle command-not-found
 
