@@ -40,25 +40,61 @@ EOF
 # Add brew to rc files
 brew_content="eval \"\$(/opt/homebrew/bin/brew shellenv)\""
 
-insert_or_update_block "brew_zprofile" "$brew_content" ~/.zprofile
-insert_or_update_block "brew_bash_profile" "$brew_content" ~/.bashrc
+insert_or_update_block "brew_zprofile" "$brew_content" $HOME/.zprofile
+insert_or_update_block "brew_bash_profile" "$brew_content" $HOME/.bashrc
 
 # Install zsh
-bew install zsh
+brew install zsh
 
 # Set shell to zsh
 [[ $(basename "$SHELL") != "zsh" ]] && chsh -s $(which zsh)
 
 # Install brew formulas
-brew install antigen git ca-certificates cryptography eza autoenv
-brew install telnet awscli libpq autojump autossh doctl helm openjdk rclone tree mas
+brew install
+brew install antigen
+brew install git
+brew install ca-certificates
+brew install cryptography
+brew install eza
+brew install autoenv
+brew install telnet
+brew install awscli
+brew install libpq
+brew install autojump
+brew install autossh
+brew install doctl
+brew install helm
+brew install openjdk
+brew install rclone
+brew install tree
+brew install mas
 
 softwareupdate --install-rosetta --agree-to-license
 
 # Mac apps
-brew install --cask bruno alt-tab insomnia arc 1password beekeeper-studio free-download-manager
-brew install --cask ina iterm2 lens obsidian raycast rectangle-pro spotify whatsapp the-unarchiver
-brew install --cask transmit visual-studio-code webstorm zoom meetingbar bartender ultimaker-cura
+brew install --cask bruno
+brew install --cask alt-tab
+brew install --cask insomnia
+brew install --cask arc
+brew install --cask 1password
+brew install --cask beekeeper-studio
+brew install --cask free-download-manager
+brew install --cask ina
+brew install --cask iterm2
+brew install --cask lens
+brew install --cask obsidian
+brew install --cask raycast
+brew install --cask rectangle-pro
+brew install --cask spotify
+brew install --cask whatsapp
+brew install --cask the-unarchiver
+brew install --cask transmit
+brew install --cask visual-studio-code
+brew install --cask webstorm
+brew install --cask zoom
+brew install --cask meetingbar
+brew install --cask bartender
+brew install --cask ultimaker-cura
 
 # Mac App Store
 mas install 937984704  # Amphetamine
@@ -66,14 +102,14 @@ mas install 497799835  # xcode
 mas install 1450874784 # transporter
 mas install 6469755356 # big red warning
 
-curl -o ~/.zshrc -L https://raw.githubusercontent.com/reezpatel/dotfiles/main/files/.zshrc
-curl -o ~/.bash_aliases -L https://raw.githubusercontent.com/reezpatel/dotfiles/main/files/bash_aliases.sh
-curl -o ~/.bash_functions -L https://raw.githubusercontent.com/reezpatel/dotfiles/main/files/bash_fuctions.sh
-curl -o ~/.vimrc -L https://raw.githubusercontent.com/reezpatel/dotfiles/main/files/.vimrc
-curl -o ~/.gitconfig -L https://raw.githubusercontent.com/reezpatel/dotfiles/main/files/.gitconfig
+curl -o $HOME/.zshrc -L https://raw.githubusercontent.com/reezpatel/dotfiles/main/files/.zshrc
+curl -o $HOME/.bash_aliases -L https://raw.githubusercontent.com/reezpatel/dotfiles/main/files/bash_aliases.sh
+curl -o $HOME/.bash_functions -L https://raw.githubusercontent.com/reezpatel/dotfiles/main/files/bash_fuctions.sh
+curl -o $HOME/.vimrc -L https://raw.githubusercontent.com/reezpatel/dotfiles/main/files/.vimrc
+curl -o $HOME/.gitconfig -L https://raw.githubusercontent.com/reezpatel/dotfiles/main/files/.gitconfig
 
-mkdir -p ~/.dotfiles
-touch ~/.dotfiles/.zshrc # Create local file, for local config
+mkdir -p $HOME/.dotfiles
+touch $HOME/.dotfiles/.zshrc # Create local file, for local config
 
 # NVM
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
@@ -123,9 +159,6 @@ defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 # Enable AirDrop over Ethernet and on unsupported Macs running Lion
 defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool true
 
-# Show the ~/Library folder
-chflags nohidden ~/Library && xattr -d com.apple.FinderInfo ~/Library
-
 # Show the /Volumes folder
 sudo chflags nohidden /Volumes
 
@@ -146,6 +179,3 @@ defaults write com.apple.dock show-recents -bool false
 
 # Prevent Time Machine from prompting to use new hard drives as backup volume
 defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
-
-# Disable local Time Machine backups
-hash tmutil &>/dev/null && sudo tmutil disablelocal
