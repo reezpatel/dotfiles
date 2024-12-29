@@ -29,7 +29,7 @@ rebase = true
 showUntrackedFiles = all
 
 [include]
-path = ~/.dotfiles/gitconfig
+path = ~/.dotfiles/.gitconfig
 
 # [alias]
 #     #   convenient abbreviations of standard commands (plain)

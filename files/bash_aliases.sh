@@ -33,6 +33,7 @@ alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup
 # git
 alias g="git"
 alias ga="git add"
+alias gs="git status"
 alias gc="git commit"
 
 alias gaa="git add -A"
@@ -40,7 +41,7 @@ alias gcm="git checkout main"
 alias gfm="git fetch origin main"
 alias gmm="git merge origin/main"
 alias gpm="git pull origin main -r"
-alias gpo='git pull origin $(git rev-parse --abbrev-ref HEAD)'
+alias gpo='git push origin $(git rev-parse --abbrev-ref HEAD)'
 alias gmc="git merge --continue"
 alias gcp="git cherry-pick"
 

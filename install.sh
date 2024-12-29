@@ -113,13 +113,13 @@ install_or_update_cask zoom
 install_or_update_cask meetingbar
 install_or_update_cask bartender
 install_or_update_cask ultimaker-cura
+install_or_update_cask spotify
 
 # Mac App Store
 mas install 937984704  # Amphetamine
 mas install 497799835  # xcode
 mas install 1450874784 # transporter
 mas install 6469755356 # big red warning
-mas install 324684580  # Spotify
 
 curl -o $HOME/.zshrc -L https://raw.githubusercontent.com/reezpatel/dotfiles/main/files/.zshrc
 curl -o $HOME/.bash_aliases -L https://raw.githubusercontent.com/reezpatel/dotfiles/main/files/bash_aliases.sh
