@@ -16,7 +16,7 @@ function insert_or_update_block {
         echo "# INSERTED_BY_DOTFILE START $unique_id" >"$file_path"
         echo "$content" >>"$file_path"
         echo "# INSERTED_BY_DOTFILE END $unique_id" >>"$file_path"
-        log "File created: $file_path"
+        echo "File created: $file_path"
     else
         # Replace the existing block
         sed -i '' "/# INSERTED_BY_DOTFILE START $unique_id/,/# INSERTED_BY_DOTFILE END $unique_id/d" "$file_path"
@@ -28,7 +28,7 @@ $content
 # INSERTED_BY_DOTFILE END $unique_id
 EOF
 
-        log "Block updated in: $file_path"
+        echo "Block updated in: $file_path"
     fi
 }
 
@@ -40,8 +40,8 @@ EOF
 # Add brew to rc files
 brew_content="eval \"\$(/opt/homebrew/bin/brew shellenv)\""
 
-insert_or_update_block "brew_zprofile" "$brew_content" "~/.zprofile"
-insert_or_update_block "brew_bash_profile" "$brew_content" "~/.bashrc"
+insert_or_update_block "brew_zprofile" "$brew_content" ~/.zprofile
+insert_or_update_block "brew_bash_profile" "$brew_content" ~/.bashrc
 
 # Install zsh
 bew install zsh
