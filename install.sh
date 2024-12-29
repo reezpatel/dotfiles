@@ -104,7 +104,6 @@ install_or_update_cask lens
 install_or_update_cask obsidian
 install_or_update_cask raycast
 install_or_update_cask rectangle-pro
-install_or_update_cask spotify
 install_or_update_cask whatsapp
 install_or_update_cask the-unarchiver
 install_or_update_cask transmit
@@ -120,6 +119,7 @@ mas install 937984704  # Amphetamine
 mas install 497799835  # xcode
 mas install 1450874784 # transporter
 mas install 6469755356 # big red warning
+mas install 324684580  # Spotify
 
 curl -o $HOME/.zshrc -L https://raw.githubusercontent.com/reezpatel/dotfiles/main/files/.zshrc
 curl -o $HOME/.bash_aliases -L https://raw.githubusercontent.com/reezpatel/dotfiles/main/files/bash_aliases.sh

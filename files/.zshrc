@@ -16,7 +16,7 @@ antigen apply
 export PATH="$HOMEBREW_PREFIX/opt/libpq/bin:$PATH"
 
 # autojump
-[ -f \$HOMEBREW_PREFIX/etc/profile.d/autojump.sh ] && . \$HOMEBREW_PREFIX/etc/profile.d/autojump.sh
+[ -f $HOMEBREW_PREFIX/etc/profile.d/autojump.sh ] && . $HOMEBREW_PREFIX/etc/profile.d/autojump.sh
 
 # nvm
 export NVM_DIR="$HOME/.nvm"
