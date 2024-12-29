@@ -42,6 +42,16 @@ install_or_update_cask() {
     fi
 }
 
+install_or_update_formula() {
+    program="$1"
+
+    if brew list $program >/dev/null 2>&1; then
+        brew upgrade $program
+    else
+        brew install --force $program
+    fi
+}
+
 #### ACTUAL INSTALLATION ####
 
 # Install brew
@@ -54,29 +64,29 @@ insert_or_update_block "brew_zprofile" "$brew_content" $HOME/.zprofile
 insert_or_update_block "brew_bash_profile" "$brew_content" $HOME/.bashrc
 
 # Install zsh
-brew install zsh
+install_or_update_formula
 
 # Set shell to zsh
 [[ $(basename "$SHELL") != "zsh" ]] && chsh -s $(which zsh)
 
 # Install brew formulas
-brew install antigen
-brew install git
-brew install ca-certificates
-brew install cryptography
-brew install eza
-brew install autoenv
-brew install telnet
-brew install awscli
-brew install libpq
-brew install autojump
-brew install autossh
-brew install doctl
-brew install helm
-brew install openjdk
-brew install rclone
-brew install tree
-brew install mas
+install_or_update_formula antigen
+install_or_update_formula git
+install_or_update_formula ca-certificates
+install_or_update_formula cryptography
+install_or_update_formula eza
+install_or_update_formula autoenv
+install_or_update_formula telnet
+install_or_update_formula awscli
+install_or_update_formula libpq
+install_or_update_formula autojump
+install_or_update_formula autossh
+install_or_update_formula doctl
+install_or_update_formula helm
+install_or_update_formula openjdk
+install_or_update_formula rclone
+install_or_update_formula tree
+install_or_update_formula mas
 
 softwareupdate --install-rosetta --agree-to-license
 
