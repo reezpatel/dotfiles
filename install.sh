@@ -32,6 +32,16 @@ EOF
     fi
 }
 
+install_or_update_cask() {
+    program="$1"
+
+    if brew list --cask $program >/dev/null 2>&1; then
+        brew upgrade --cask $program
+    else
+        brew install --cask --force $program
+    fi
+}
+
 #### ACTUAL INSTALLATION ####
 
 # Install brew
@@ -50,7 +60,6 @@ brew install zsh
 [[ $(basename "$SHELL") != "zsh" ]] && chsh -s $(which zsh)
 
 # Install brew formulas
-brew install
 brew install antigen
 brew install git
 brew install ca-certificates
@@ -72,29 +81,29 @@ brew install mas
 softwareupdate --install-rosetta --agree-to-license
 
 # Mac apps
-brew install --cask bruno
-brew install --cask alt-tab
-brew install --cask insomnia
-brew install --cask arc
-brew install --cask 1password
-brew install --cask beekeeper-studio
-brew install --cask free-download-manager
-brew install --cask ina
-brew install --cask iterm2
-brew install --cask lens
-brew install --cask obsidian
-brew install --cask raycast
-brew install --cask rectangle-pro
-brew install --cask spotify
-brew install --cask whatsapp
-brew install --cask the-unarchiver
-brew install --cask transmit
-brew install --cask visual-studio-code
-brew install --cask webstorm
-brew install --cask zoom
-brew install --cask meetingbar
-brew install --cask bartender
-brew install --cask ultimaker-cura
+install_or_update_cask bruno
+install_or_update_cask alt-tab
+install_or_update_cask insomnia
+install_or_update_cask arc
+install_or_update_cask 1password
+install_or_update_cask beekeeper-studio
+install_or_update_cask free-download-manager
+install_or_update_cask iina
+install_or_update_cask iterm2
+install_or_update_cask lens
+install_or_update_cask obsidian
+install_or_update_cask raycast
+install_or_update_cask rectangle-pro
+install_or_update_cask spotify
+install_or_update_cask whatsapp
+install_or_update_cask the-unarchiver
+install_or_update_cask transmit
+install_or_update_cask visual-studio-code
+install_or_update_cask webstorm
+install_or_update_cask zoom
+install_or_update_cask meetingbar
+install_or_update_cask bartender
+install_or_update_cask ultimaker-cura
 
 # Mac App Store
 mas install 937984704  # Amphetamine
