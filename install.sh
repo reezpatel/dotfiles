@@ -114,6 +114,7 @@ install_or_update_cask meetingbar
 install_or_update_cask bartender
 install_or_update_cask ultimaker-cura
 install_or_update_cask spotify
+install_or_update_cask ghostty
 
 # Mac App Store
 mas install 937984704  # Amphetamine
