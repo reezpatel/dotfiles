@@ -36,7 +36,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 # Aliases
-source ~/.dotfiles/config/bash_functions.sh
-source ~/.dotfiles/config/bash_aliases.sh
+source ~/dotfiles/config/bash_functions.sh
+source ~/dotfiles/config/bash_aliases.sh
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
