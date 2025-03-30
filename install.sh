@@ -1,201 +1,172 @@
 #!/bin/bash
 
-#### HELPER FUNCTIONS ####
+# Colors for output
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
 
-function insert_or_update_block {
-    local unique_id="$1"
-    local content="$2"
-    local file_path="$3"
+# Check if dotfiles directory exists
+if [ -d "$HOME/dotfiles" ]; then
+    echo "Dotfiles repository exists, updating..."
+    cd "$HOME/dotfiles"
+    git reset --hard HEAD
+    git checkout main
+    git pull origin main
+    echo -e "${GREEN}Dotfiles repository updated!${NC}"
+else
+    echo "Cloning dotfiles repository..."
+    git clone https://github.com/reezpatel/dotfiles.git "$HOME/dotfiles"
+    cd "$HOME/dotfiles"
+    git checkout main
+    echo -e "${GREEN}Dotfiles repository cloned!${NC}"
+fi
 
-    # Create the directory if it doesn't exist
-    mkdir -p "$(dirname "$file_path")"
+echo "Checking if Homebrew is installed..."
 
-    # Check if the file exists
-    if [[ ! -f "$file_path" ]]; then
-        # Create the file with the initial block
-        echo "# INSERTED_BY_DOTFILE START $unique_id" >"$file_path"
-        echo "$content" >>"$file_path"
-        echo "# INSERTED_BY_DOTFILE END $unique_id" >>"$file_path"
-        echo "File created: $file_path"
+# Check if Homebrew is installed
+if command -v brew &>/dev/null; then
+    echo -e "${GREEN}Homebrew is already installed!${NC}"
+    echo "Current version: $(brew --version | head -n 1)"
+
+    # Update Homebrew
+    echo "Updating Homebrew..."
+    brew update
+    echo -e "${GREEN}Homebrew has been updated!${NC}"
+else
+    echo -e "${YELLOW}Homebrew is not installed. Installing now...${NC}"
+
+    # Check OS type
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        # macOS installation
+        echo "Installing Homebrew for macOS..."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+        # Add Homebrew to path based on shell and architecture
+        if [[ $(uname -m) == "arm64" ]]; then
+            echo "Detected Apple Silicon Mac"
+            eval "$(/opt/homebrew/bin/brew shellenv)"
+        else
+            eval "$(/usr/local/bin/brew shellenv)"
+        fi
+    elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        # Linux installation
+        echo "Installing Homebrew for Linux..."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+        # Add Homebrew to path for Linux
+        test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
+        test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
     else
-        # Replace the existing block
-        sed -i '' "/# INSERTED_BY_DOTFILE START $unique_id/,/# INSERTED_BY_DOTFILE END $unique_id/d" "$file_path"
-
-        # Use cat to append the content at the end of the file
-        cat >>"$file_path" <<EOF
-# INSERTED_BY_DOTFILE START $unique_id
-$content
-# INSERTED_BY_DOTFILE END $unique_id
-EOF
-
-        echo "Block updated in: $file_path"
+        echo -e "${RED}Unsupported operating system. Homebrew can only be installed on macOS or Linux.${NC}"
+        exit 1
     fi
-}
 
-install_or_update_cask() {
-    program="$1"
+    echo -e "${GREEN}Homebrew has been successfully installed!${NC}"
+fi
 
-    if brew list --cask $program >/dev/null 2>&1; then
-        brew upgrade --cask $program
-    else
-        brew install --cask --force $program
+# Install and configure nvm (Node Version Manager)
+echo "Checking if nvm is installed..."
+
+if [ -d "$HOME/.nvm" ]; then
+    echo -e "${GREEN}nvm is already installed!${NC}"
+else
+    echo -e "${YELLOW}Installing nvm...${NC}"
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+
+    # Load nvm
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+    echo -e "${GREEN}nvm has been successfully installed!${NC}"
+fi
+
+# Install latest LTS version of Node.js
+echo "Installing latest LTS version of Node.js..."
+nvm install --lts
+nvm use --lts
+
+echo -e "${GREEN}Node.js LTS has been installed and is now active!${NC}"
+echo "Node version: $(node --version)"
+echo "npm version: $(npm --version)"
+
+# Install and configure Zsh
+echo "Checking if Zsh is installed..."
+
+if command -v zsh >/dev/null 2>&1; then
+    echo -e "${GREEN}Zsh is already installed!${NC}"
+else
+    echo -e "${YELLOW}Installing Zsh...${NC}"
+    brew install zsh
+    echo -e "${GREEN}Zsh has been successfully installed!${NC}"
+fi
+
+# Install Antigen
+echo "Checking if Antigen is installed..."
+if [ -f "$HOMEBREW_PREFIX/share/antigen/antigen.zsh" ]; then
+    echo -e "${GREEN}Antigen is already installed!${NC}"
+else
+    echo -e "${YELLOW}Installing Antigen...${NC}"
+    brew install antigen
+    echo -e "${GREEN}Antigen has been successfully installed!${NC}"
+fi
+
+# Set Zsh as default shell
+if [[ "$SHELL" != *"zsh"* ]]; then
+    echo "Setting Zsh as default shell..."
+    ZSH_PATH="$HOMEBREW_PREFIX/bin/zsh"
+    if ! grep -q "$ZSH_PATH" /etc/shells; then
+        echo "$ZSH_PATH" | sudo tee -a /etc/shells
     fi
-}
+    chsh -s "$ZSH_PATH"
+    echo -e "${GREEN}Zsh is now your default shell!${NC}"
+else
+    echo -e "${GREEN}Zsh is already your default shell!${NC}"
+fi
 
-install_or_update_formula() {
-    program="$1"
+# source ~/dotfiles/config/.zshrc to ~/.zshrc if not already there
+if ! grep -q "source ~/dotfiles/config/.zshrc" ~/.zshrc; then
+    echo "Sourcing ~/dotfiles/config/.zshrc..."
+    echo "source ~/dotfiles/config/.zshrc" >>~/.zshrc
+fi
 
-    if brew list $program >/dev/null 2>&1; then
-        brew upgrade $program
-    else
-        brew install --force $program
-    fi
-}
+# Configure git using include
+if ! grep -q "include.*~/dotfiles/config/.gitconfig" ~/.gitconfig; then
+    echo "Configuring git..."
+    echo -e "[include]\n    path = ~/dotfiles/config/.gitconfig" >>~/.gitconfig
+    echo -e "${GREEN}Git configuration has been updated!${NC}"
+else
+    echo -e "${GREEN}Git configuration already includes dotfiles!${NC}"
+fi
 
-#### ACTUAL INSTALLATION ####
+# Install packages from Brewfile
+echo "Installing packages from Brewfile..."
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS - install everything including Mac App Store apps and casks
+    brew bundle --file=~/dotfiles/Brewfile
+    echo -e "${GREEN}All packages have been installed!${NC}"
+else
+    # Linux - skip Mac App Store apps and casks
+    grep -v '^mas\|^cask\|^vscode' ~/dotfiles/Brewfile | brew bundle --file=-
+    echo -e "${GREEN}All supported packages have been installed!${NC}"
+fi
 
-# Install brew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" </dev/null
+# Configure tmux
+if ! grep -q "source-file ~/dotfiles/config/tmux/tmux.conf" ~/.tmux.conf; then
+    echo "Configuring tmux..."
+    echo "source-file ~/dotfiles/config/tmux/tmux.conf" >>~/.tmux.conf
+    echo -e "${GREEN}Tmux configuration has been updated!${NC}"
+else
+    echo -e "${GREEN}Tmux configuration already includes dotfiles!${NC}"
+fi
 
-# Add brew to rc files
-brew_content="eval \"\$(/opt/homebrew/bin/brew shellenv)\""
-
-insert_or_update_block "brew_zprofile" "$brew_content" $HOME/.zprofile
-insert_or_update_block "brew_bash_profile" "$brew_content" $HOME/.bashrc
-
-# Install zsh
-install_or_update_formula
-
-# Set shell to zsh
-[[ $(basename "$SHELL") != "zsh" ]] && chsh -s $(which zsh)
-
-# Install brew formulas
-install_or_update_formula antigen
-install_or_update_formula git
-install_or_update_formula ca-certificates
-install_or_update_formula cryptography
-install_or_update_formula eza
-install_or_update_formula autoenv
-install_or_update_formula telnet
-install_or_update_formula awscli
-install_or_update_formula libpq
-install_or_update_formula autojump
-install_or_update_formula autossh
-install_or_update_formula doctl
-install_or_update_formula helm
-install_or_update_formula openjdk
-install_or_update_formula rclone
-install_or_update_formula tree
-install_or_update_formula mas
-
-softwareupdate --install-rosetta --agree-to-license
-
-# Mac apps
-install_or_update_cask bruno
-install_or_update_cask alt-tab
-install_or_update_cask insomnia
-install_or_update_cask arc
-install_or_update_cask 1password
-install_or_update_cask beekeeper-studio
-install_or_update_cask free-download-manager
-install_or_update_cask iina
-install_or_update_cask iterm2
-install_or_update_cask lens
-install_or_update_cask obsidian
-install_or_update_cask raycast
-install_or_update_cask rectangle-pro
-install_or_update_cask whatsapp
-install_or_update_cask the-unarchiver
-install_or_update_cask transmit
-install_or_update_cask visual-studio-code
-install_or_update_cask webstorm
-install_or_update_cask zoom
-install_or_update_cask meetingbar
-install_or_update_cask bartender
-install_or_update_cask ultimaker-cura
-install_or_update_cask spotify
-install_or_update_cask ghostty
-
-# Mac App Store
-mas install 937984704  # Amphetamine
-mas install 497799835  # xcode
-mas install 1450874784 # transporter
-mas install 6469755356 # big red warning
-
-curl -o $HOME/.zshrc -L https://raw.githubusercontent.com/reezpatel/dotfiles/main/files/.zshrc
-curl -o $HOME/.bash_aliases -L https://raw.githubusercontent.com/reezpatel/dotfiles/main/files/bash_aliases.sh
-curl -o $HOME/.bash_functions -L https://raw.githubusercontent.com/reezpatel/dotfiles/main/files/bash_fuctions.sh
-curl -o $HOME/.vimrc -L https://raw.githubusercontent.com/reezpatel/dotfiles/main/files/.vimrc
-curl -o $HOME/.gitconfig -L https://raw.githubusercontent.com/reezpatel/dotfiles/main/files/.gitconfig
-
-mkdir -p $HOME/.dotfiles
-touch $HOME/.dotfiles/.zshrc # Create local file, for local config
-
-# NVM
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
-
-#### Mac os
-
-# Disable the sound effects on boot
-sudo nvram SystemAudioVolume=" "
-
-# Disable the “Are you sure you want to open this application?” dialog
-defaults write com.apple.LaunchServices LSQuarantine -bool false
-
-# Remove duplicates in the “Open With” menu (also see `lscleanup` alias)
-/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user
-
-# Disable automatic capitalization as it’s annoying when typing code
-defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
-
-# Disable auto-correct
-defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
-
-# Disable machine sleep while charging
-sudo pmset -c sleep 0
-
-# Finder: show hidden files by default
-defaults write com.apple.finder AppleShowAllFiles -bool true
-
-# Finder: show all filename extensions
-defaults write NSGlobalDomain AppleShowAllExtensions -bool true
-
-# Finder: show status bar
-defaults write com.apple.finder ShowStatusBar -bool true
-
-# Finder: show path bar
-defaults write com.apple.finder ShowPathbar -bool true
-
-# Keep folders on top when sorting by name
-defaults write com.apple.finder _FXSortFoldersFirst -bool true
-
-# When performing a search, search the current folder by default
-defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
-
-# Avoid creating .DS_Store files on network or USB volumes
-defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
-defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
-
-# Enable AirDrop over Ethernet and on unsupported Macs running Lion
-defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool true
-
-# Show the /Volumes folder
-sudo chflags nohidden /Volumes
-
-# Don’t animate opening applications from the Dock
-defaults write com.apple.dock launchanim -bool false
-
-# Speed up Mission Control animations
-defaults write com.apple.dock expose-animation-duration -float 0.1
-
-# Remove the auto-hiding Dock delay
-defaults write com.apple.dock autohide-delay -float 0
-
-# Remove the animation when hiding/showing the Dock
-defaults write com.apple.dock autohide-time-modifier -float 0
-
-# Don’t show recent applications in Dock
-defaults write com.apple.dock show-recents -bool false
-
-# Prevent Time Machine from prompting to use new hard drives as backup volume
-defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
+# Configure neovim
+if ! grep -q "source ~/dotfiles/config/nvim/init.lua" ~/.config/nvim/init.lua 2>/dev/null; then
+    echo "Configuring neovim..."
+    mkdir -p ~/.config/nvim
+    echo "require('~/dotfiles/config/nvim/init')" >~/.config/nvim/init.lua
+    echo -e "${GREEN}Neovim configuration has been updated!${NC}"
+else
+    echo -e "${GREEN}Neovim configuration already includes dotfiles!${NC}"
+fi
