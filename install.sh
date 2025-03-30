@@ -153,9 +153,9 @@ else
 fi
 
 # Configure tmux
-if ! grep -q "source-file ~/dotfiles/config/tmux/tmux.conf" ~/.tmux.conf; then
+if ! grep -q "source-file ~/dotfiles/config/tmux.conf" ~/.tmux.conf; then
     echo "Configuring tmux..."
-    echo "source-file ~/dotfiles/config/tmux/tmux.conf" >>~/.tmux.conf
+    echo "source-file ~/dotfiles/config/tmux.conf" >>~/.tmux.conf
     echo -e "${GREEN}Tmux configuration has been updated!${NC}"
 else
     echo -e "${GREEN}Tmux configuration already includes dotfiles!${NC}"
