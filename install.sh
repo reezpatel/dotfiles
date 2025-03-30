@@ -171,10 +171,11 @@ else
     echo -e "${GREEN}Neovim configuration already includes dotfiles!${NC}"
 fi
 
-# Configure ghosty
-if ! grep -q "config-file = ~/.dotfiles/config/ghosty" ~/.ghostty 2>/dev/null; then
-    echo "Configuring ghosty..."
-    echo "config-file = ~/.dotfiles/config/ghosty" >~/.ghostty
+# Configure ghostty
+if ! grep -q "config-file = ~/.dotfiles/config/ghostty" ~/.config/ghostty/config 2>/dev/null; then
+    echo "Configuring ghostty..."
+    mkdir -p ~/.config/ghostty
+    echo "config-file = ~/.dotfiles/config/ghostty" >~/.config/ghostty/config
     echo -e "${GREEN}Ghosty configuration has been updated!${NC}"
 else
     echo -e "${GREEN}Ghosty configuration already includes dotfiles!${NC}"
