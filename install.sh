@@ -162,10 +162,16 @@ else
 fi
 
 # Configure neovim
-if ! grep -q "source ~/dotfiles/config/nvim/init.lua" ~/.config/nvim/init.lua 2>/dev/null; then
+if ! grep -q "local home_dir = os.getenv(\"HOME\")" ~/.config/nvim/init.lua 2>/dev/null; then
     echo "Configuring neovim..."
     mkdir -p ~/.config/nvim
-    echo "require('~/dotfiles/config/nvim/init')" >~/.config/nvim/init.lua
+    echo "local home_dir = os.getenv(\"HOME\")" >~/.config/nvim/init.lua
+    echo "if home_dir then" >>~/.config/nvim/init.lua
+    echo "  local my_config_path = home_dir .. \"/dotfiles/config/nvim/init\"" >>~/.config/nvim/init.lua
+    echo "  require(my_config_path)" >>~/.config/nvim/init.lua
+    echo "else" >>~/.config/nvim/init.lua
+    echo "  print(\"Error: HOME environment variable not set.\")" >>~/.config/nvim/init.lua
+    echo "end" >>~/.config/nvim/init.lua
     echo -e "${GREEN}Neovim configuration has been updated!${NC}"
 else
     echo -e "${GREEN}Neovim configuration already includes dotfiles!${NC}"
