@@ -64,12 +64,12 @@ return {
 			end, { desc = "Harpoon: Add file" })
 			--
 			-- -- Toggle quick menu
-			-- vim.keymap.set("n", "<C-e>", function()
-			-- 	harpoon.ui:toggle_quick_menu(harpoon:list())
-			-- end, { desc = "Harpoon: Toggle quick menu" })
-			--
-			-- Toggle Telescope view (if Telescope is installed)
 			vim.keymap.set("n", "<C-e>", function()
+				harpoon.ui:toggle_quick_menu(harpoon:list())
+			end, { desc = "Harpoon: Toggle quick menu" })
+
+			-- Toggle Telescope view (if Telescope is installed)
+			vim.keymap.set("n", "<C-S-e>", function()
 				toggle_telescope(harpoon:list())
 			end, { desc = "Harpoon: Open in Telescope" })
 
