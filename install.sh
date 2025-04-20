@@ -10,7 +10,7 @@ NC='\033[0m' # No Color
 if [ -d "$HOME/dotfiles" ]; then
     echo "Dotfiles repository exists, updating..."
     cd "$HOME/dotfiles"
-    git clean
+    git clean -f
     git reset --hard HEAD
     git checkout main
     git pull origin main
