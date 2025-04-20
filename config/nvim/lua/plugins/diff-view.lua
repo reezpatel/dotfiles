@@ -13,9 +13,10 @@ return {
 		"DiffviewFileHistory",
 	},
 	keys = {
-		{ "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "DiffView Open" },
-		{ "<leader>gh", "<cmd>DiffviewFileHistory %<cr>", desc = "File History (Current File)" },
-		{ "<leader>gH", "<cmd>DiffviewFileHistory<cr>", desc = "File History (Project)" },
+		{ "<leader>ggd", "<cmd>DiffviewOpen<cr>", desc = "DiffView Open" },
+		{ "<leader>ggh", "<cmd>DiffviewFileHistory %<cr>", desc = "File History (Current File)" },
+		{ "<leader>ggH", "<cmd>DiffviewFileHistory<cr>", desc = "File History (Project)" },
+		{ "<leader>ggc", "<cmd>DiffviewClose<cr>", desc = "Diffview Close" },
 	},
 	config = function()
 		local actions = require("diffview.actions")

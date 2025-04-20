@@ -64,14 +64,19 @@ return {
 			end, { desc = "Harpoon: Add file" })
 			--
 			-- -- Toggle quick menu
-			vim.keymap.set("n", "<C-e>", function()
+			vim.keymap.set("n", "<leader>hh", function()
 				harpoon.ui:toggle_quick_menu(harpoon:list())
-			end, { desc = "Harpoon: Toggle quick menu" })
-
+			end, { desc = "Harpoon: Toggle quick menu", noremap = true, silent = true })
 			-- Toggle Telescope view (if Telescope is installed)
-			vim.keymap.set("n", "<C-S-e>", function()
+			vim.keymap.set("n", "<leader>he", function()
 				toggle_telescope(harpoon:list())
 			end, { desc = "Harpoon: Open in Telescope" })
+
+			for i = 1, 9 do
+				vim.keymap.set("n", "<leader>" .. i, function()
+					harpoon:list():select(i)
+				end, { desc = "Harpoon: Go to file " .. i })
+			end
 
 			-- -- Navigate to files by index
 			-- 	vim.keymap.set("n", "<C-h>", function()
@@ -104,17 +109,6 @@ return {
 			vim.keymap.set("n", "<leader>hc", function()
 				harpoon:list():clear()
 			end, { desc = "Harpoon: Clear all marks" })
-
-			-- Optional: For tmux integration
-			-- You can navigate to specific tmux windows instead of files
-			vim.keymap.set("n", "<leader>ht", function()
-				harpoon.tmux:gotoTerminal(1)
-			end, { desc = "Harpoon: Go to tmux terminal 1" })
-
-			-- Optional: Send command to a tmux window
-			vim.keymap.set("n", "<leader>hx", function()
-				harpoon.tmux:sendCommand(1, "ls -la")
-			end, { desc = "Harpoon: Send command to tmux terminal 1" })
 		end,
 	},
 }

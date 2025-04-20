@@ -57,6 +57,7 @@ return {
 			},
 			view = {
 				width = 30,
+				relativenumber = true,
 				float = {
 					enable = true,
 					open_win_config = function()

@@ -108,11 +108,46 @@ return {
 						name = "lazydev",
 						-- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
 						group_index = 0,
+						keyword_length = 2,
 					},
-					{ name = "nvim_lsp" },
+					{ name = "nvim_lsp", keyword_length = 2 },
 					-- { name = "luasnip" },
-					{ name = "path" },
-					{ name = "nvim_lsp_signature_help" },
+					{ name = "path", keyword_length = 1 },
+					{ name = "nvim_lsp_signature_help", keyword_length = 2 },
+				},
+				sorting = {
+					priority_weight = 2,
+					comparators = {
+						-- Prioritize fields and variables first
+						function(entry1, entry2)
+							local kinds = require("cmp.types").lsp.CompletionItemKind
+							local kind1 = entry1:get_kind()
+							local kind2 = entry2:get_kind()
+
+							-- Field (6) and Variable (5) kinds should come first
+							if kind1 == kinds.Field or kind1 == kinds.Variable then
+								if kind2 ~= kinds.Field and kind2 ~= kinds.Variable then
+									return true
+								end
+							elseif kind2 == kinds.Field or kind2 == kinds.Variable then
+								return false
+							end
+
+							-- Fall back to default sorting for other items
+							return nil
+						end,
+
+						-- Keep other default comparators
+						cmp.config.compare.offset,
+						cmp.config.compare.exact,
+						cmp.config.compare.score,
+						cmp.config.compare.recently_used,
+						cmp.config.compare.locality,
+						cmp.config.compare.kind,
+						cmp.config.compare.sort_text,
+						cmp.config.compare.length,
+						cmp.config.compare.order,
+					},
 				},
 			})
 		end,

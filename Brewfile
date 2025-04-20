@@ -10,6 +10,7 @@ brew "doctl"
 brew "libgit2"
 brew "eza"
 brew "fd"
+brew "gh"
 brew "git"
 brew "graphviz"
 brew "helm"
@@ -64,6 +65,7 @@ mas "Keynote", id: 409183694
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
 mas "Transporter", id: 1450874784
+mas "WorkingHours", id: 1495643653
 mas "Xcode", id: 497799835
 vscode "4ops.terraform"
 vscode "alefragnani.bookmarks"
@@ -106,4 +108,5 @@ vscode "streetsidesoftware.code-spell-checker"
 vscode "supermaven.supermaven"
 vscode "svelte.svelte-vscode"
 vscode "vscode-icons-team.vscode-icons"
+vscode "vscodevim.vim"
 vscode "yzhang.markdown-all-in-one"

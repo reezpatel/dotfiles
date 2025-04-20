@@ -79,6 +79,22 @@ return {
 			vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
 			vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
 
+			vim.keymap.set("n", "<leader>sG", function()
+				local current_file = vim.fn.expand("%:p")
+				local current_dir = vim.fn.expand("%:p:h")
+
+				-- Only proceed if we're in a file
+				if current_file ~= "" then
+					require("telescope.builtin").live_grep({
+						prompt_title = "Find in " .. vim.fn.fnamemodify(current_dir, ":~:."),
+						cwd = current_dir,
+					})
+				else
+					-- Fallback if no file is open
+					require("telescope.builtin").find_files()
+				end
+			end, { desc = "Find files in current file's directory" })
+
 			-- Slightly advanced example of overriding default behavior and theme
 			vim.keymap.set("n", "<leader>/", function()
 				-- You can pass additional configuration to Telescope to change the theme, layout, etc.

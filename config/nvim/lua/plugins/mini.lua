@@ -1,6 +1,12 @@
 return {
+	{
+		"JoosepAlviste/nvim-ts-context-commentstring",
+		lazy = true,
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
+	},
 	{ -- Collection of various small independent plugins/modules
 		"echasnovski/mini.nvim",
+		dependencies = { "JoosepAlviste/nvim-ts-context-commentstring" },
 		config = function()
 			-- Better Around/Inside textobjects
 			--
@@ -9,58 +15,26 @@ return {
 			--  - yinq - [Y]ank [I]nside [N]ext [Q]uote
 			--  - ci'  - [C]hange [I]nside [']quote
 			require("mini.ai").setup({ n_lines = 500 })
-
-			-- Add/delete/replace surroundings (brackets, quotes, etc.)
-			--
-			-- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
-			-- - sd'   - [S]urround [D]elete [']quotes
-			-- - sr)'  - [S]urround [R]eplace [)] [']
-			require("mini.surround").setup(
-				-- No need to copy this inside `setup()`. Will be used automatically.
-				{
-					-- Add custom surroundings to be used on top of builtin ones. For more
-					-- information with examples, see `:h MiniSurround.config`.
-					custom_surroundings = nil,
-
-					-- Duration (in ms) of highlight when calling `MiniSurround.highlight()`
-					highlight_duration = 500,
-
-					-- Module mappings. Use `''` (empty string) to disable one.
-					mappings = {
-						add = "sa", -- Add surrounding in Normal and Visual modes
-						delete = "sd", -- Delete surrounding
-						find = "sf", -- Find surrounding (to the right)
-						find_left = "sF", -- Find surrounding (to the left)
-						highlight = "sh", -- Highlight surrounding
-						replace = "sr", -- Replace surrounding
-						update_n_lines = "sn", -- Update `n_lines`
-
-						suffix_last = "l", -- Suffix to search with "prev" method
-						suffix_next = "n", -- Suffix to search with "next" method
-					},
-
-					-- Number of lines within which surrounding is searched
-					n_lines = 20,
-
-					-- Whether to respect selection type:
-					-- - Place surroundings on separate lines in linewise mode.
-					-- - Place surroundings on each line in blockwise mode.
-					respect_selection_type = false,
-
-					-- How to search for surrounding (first inside current line, then inside
-					-- neighborhood). One of 'cover', 'cover_or_next', 'cover_or_prev',
-					-- 'cover_or_nearest', 'next', 'prev', 'nearest'. For more details,
-					-- see `:h MiniSurround.config`.
-					search_method = "cover",
-
-					-- Whether to disable showing non-error feedback
-					-- This also affects (purely informational) helper messages shown after
-					-- idle time if user input is required.
-					silent = false,
-				}
-			)
-
 			require("mini.move").setup()
+			require("mini.pairs").setup()
+			require("mini.operators").setup({
+				replace = {
+					prefix = "P",
+					reindent_linewise = true,
+				},
+				exchange = { disable = true },
+				multiply = { disable = true },
+				sort = { disable = true },
+			})
+			require("mini.comment").setup({
+				options = {
+					custom_commentstring = function()
+						return require("ts_context_commentstring.internal").calculate_commentstring()
+							or vim.bo.commentstring
+					end,
+				},
+			})
+			require("mini.bracketed").setup()
 
 			-- Simple and easy statusline.
 			--  You could remove this setup call if you don't like it,

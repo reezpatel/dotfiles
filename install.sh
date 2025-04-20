@@ -152,8 +152,20 @@ else
     echo -e "${GREEN}All supported packages have been installed!${NC}"
 fi
 
+echo "Installing packages from Npmfile..."
+if [ -f ~/dotfiles/Npmfile ]; then
+    while read package; do
+        echo "Installing $package globally..."
+        npm install -g "$package"
+    done < ~/dotfiles/Npmfile
+    echo "All packages from npmfile.txt have been installed."
+else
+    echo "Error: Npmfile not found!"
+    exit 1
+fi
+
 # Configure tmux
-if ! grep -q "source-file ~/dotfiles/config/tmux.conf" ~/.tmux.conf; then
+if ! grep -q "source-file ~/.config/tmux/tmux.conf" ~/.tmux.conf; then
     echo "Configuring tmux..."
     echo "source-file ~/dotfiles/config/tmux.conf" >>~/.tmux.conf
     echo -e "${GREEN}Tmux configuration has been updated!${NC}"

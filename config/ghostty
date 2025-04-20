@@ -1,5 +1,7 @@
 font-family = "GeistMono Nerd Font"
-theme = "Github Dark"
+theme = "Kanagawa Dragon"
+font-size = 15
+
 cursor-style = block
 cursor-click-to-move = true
 cursor-style-blink = false

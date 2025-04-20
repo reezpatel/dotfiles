@@ -61,7 +61,7 @@ vim.opt.inccommand = "split"
 vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 10
+vim.opt.scrolloff = 400
 
 vim.opt.confirm = true
 
@@ -92,7 +92,7 @@ require("lazy").setup({
 	-- colorscheme that will be used when installing plugins.
 	install = { colorscheme = { "habamax" } },
 	-- automatically check for plugin updates
-	checker = { enabled = true },
+	checker = { enabled = true, notify = false },
 })
 
 -- vim.api.nvim_set_keymap(
@@ -141,4 +141,8 @@ vim.opt.expandtab = true
 vim.opt.softtabstop = 2
 
 -- Map leader + ss to save the current file
-vim.keymap.set("n", "<leader>ss", ":w<CR>", { noremap = true, silent = true, desc = "Save file" })
+-- vim.keymap.set("n", "<leader>ss", ":w<CR>", { noremap = true, silent = true, desc = "Save file" })
+vim.opt.colorcolumn = "160"
+
+vim.api.nvim_set_keymap("n", "<Tab>", "/{\\_s*<CR>zz:noh<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<S-Tab>", "?{\\_s*<CR>zz:noh<CR>", { noremap = true, silent = true })
