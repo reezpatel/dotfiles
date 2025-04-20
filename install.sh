@@ -178,6 +178,7 @@ fi
 if [ ! -d ~/.config/nvim ]; then
     echo "Configuring neovim..."
     mkdir -p ~/.config/nvim
+    rm -rf ~/.config/nvim/*
     cp -r ~/dotfiles/config/nvim/* ~/.config/nvim/
     echo -e "${GREEN}Neovim configuration has been updated!${NC}"
 else
