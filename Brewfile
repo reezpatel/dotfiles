@@ -1,3 +1,4 @@
+tap "arl/arl"
 tap "hashicorp/tap"
 brew "antigen"
 brew "autoenv"
@@ -10,10 +11,12 @@ brew "doctl"
 brew "libgit2"
 brew "eza"
 brew "fd"
+brew "fzf"
 brew "gh"
 brew "git"
 brew "graphviz"
 brew "helm"
+brew "lazygit"
 brew "libpq"
 brew "markdownlint-cli"
 brew "mas"
@@ -29,6 +32,7 @@ brew "tree"
 brew "vim"
 brew "watch"
 brew "zsh"
+brew "arl/arl/gitmux"
 brew "hashicorp/tap/terraform"
 cask "1password"
 cask "alt-tab"
@@ -38,6 +42,7 @@ cask "bartender"
 cask "beekeeper-studio"
 cask "bruno"
 cask "font-geist-mono-nerd-font"
+cask "font-jetbrains-mono-nerd-font"
 cask "free-download-manager"
 cask "ghostty"
 cask "iina"
@@ -56,17 +61,6 @@ cask "visual-studio-code"
 cask "webstorm"
 cask "whatsapp"
 cask "zoom"
-mas "Amphetamine", id: 937984704
-mas "Big Red Warning", id: 6469755356
-mas "Color Picker", id: 1545870783
-mas "GarageBand", id: 682658836
-mas "iMovie", id: 408981434
-mas "Keynote", id: 409183694
-mas "Numbers", id: 409203825
-mas "Pages", id: 409201541
-mas "Transporter", id: 1450874784
-mas "WorkingHours", id: 1495643653
-mas "Xcode", id: 497799835
 vscode "4ops.terraform"
 vscode "alefragnani.bookmarks"
 vscode "aykutsarac.jsoncrack-vscode"

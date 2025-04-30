@@ -1,6 +1,6 @@
-font-family = "GeistMono Nerd Font"
-theme = "Kanagawa Dragon"
-font-size = 15
+font-family = "JetBrainsMonoNL NFM Regular"
+theme = "Mellow"
+font-size = 14
 
 cursor-style = block
 cursor-click-to-move = true
@@ -33,5 +33,5 @@ font-feature = +liga  # Enable ligatureso
 
 # Cell adjustment for line height equivalent to 1.6
 # For a 1.6 line height, we need approximately 60% increase
-adjust-cell-height = 15%
+adjust-cell-height = 14%
 
